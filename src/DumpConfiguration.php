@@ -27,6 +27,7 @@ class DumpConfiguration
         public bool $truncateInsteadOfRecreate = false,
         public bool $truncateIgnoredTables = true,
         public bool $zip = false,
+        public array $filterQuery = [],
     ) {
         $this->folder = $this->normalizeAndCreateFolder($folder);
     }
@@ -39,6 +40,7 @@ class DumpConfiguration
         bool $truncateInsteadOfRecreate = false,
         bool $truncateIgnoredTables = true,
         bool $zip = false,
+        array $filterQuery = [],
     ): DumpConfiguration {
         return new DumpConfiguration(
             $params['host'] ?? 'localhost',
@@ -52,6 +54,7 @@ class DumpConfiguration
             $truncateInsteadOfRecreate,
             $truncateIgnoredTables,
             $zip,
+            $filterQuery,
         );
     }
 

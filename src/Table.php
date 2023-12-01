@@ -16,7 +16,7 @@ class Table extends \Doctrine\DBAL\Schema\Table
             $table->_indexes,
             $table->uniqueConstraints,
             $table->_fkConstraints,
-            $table->_options
+            $table->_options,
         );
         return $object;
     }

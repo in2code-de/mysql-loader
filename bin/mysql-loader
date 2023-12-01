@@ -35,7 +35,8 @@ $application->add(
                  ->addOption('recreate-tables', 'r', InputOption::VALUE_NONE)
                  ->addOption('truncate-instead-of-recreate', 'R', InputOption::VALUE_NONE)
                  ->addOption('truncate-ignored-tables', 't', InputOption::VALUE_NONE)
-                 ->addOption('zip', 'z', InputOption::VALUE_NONE);
+                 ->addOption('zip', 'z', InputOption::VALUE_NONE)
+                 ->addOption('filter-query', 'Q', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED);
         }
 
         protected function execute(InputInterface $input, OutputInterface $output): int
@@ -51,6 +52,7 @@ $application->add(
             $truncateInsteadOfRecreate = $input->getOption('truncate-instead-of-recreate');
             $truncateIgnoredTables = $input->getOption('truncate-ignored-tables');
             $zip = $input->getOption('zip');
+            $filterQuery = $input->getOption('filter-query');
 
             $dumpConfiguration = new DumpConfiguration(
                 $host,
@@ -64,6 +66,7 @@ $application->add(
                 $truncateInsteadOfRecreate,
                 $truncateIgnoredTables,
                 $zip,
+                $filterQuery,
             );
 
             $dumper = new Dumper();

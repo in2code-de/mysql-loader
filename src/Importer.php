@@ -6,7 +6,6 @@ namespace CoStack\MysqlLoader;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-
 use ZipArchive;
 
 use function dirname;
@@ -15,13 +14,9 @@ use function file_exists;
 use function file_get_contents;
 use function is_dir;
 use function register_shutdown_function;
-use function rmdir;
-use function rtrim;
-use function scandir;
 use function sprintf;
 use function str_ends_with;
 use function uniqid;
-use function unlink;
 
 class Importer
 {
@@ -67,13 +62,7 @@ class Importer
         foreach ($tables as $table) {
             $inFile = $folder . $table . '.csv';
             if (file_exists($inFile)) {
-                $connection->executeStatement(
-                    sprintf(
-                        'LOAD DATA INFILE \'%s\' INTO TABLE %s',
-                        $inFile,
-                        $table,
-                    ),
-                );
+                $connection->executeStatement(sprintf('LOAD DATA INFILE \'%s\' INTO TABLE %s', $inFile, $table));
             }
         }
     }
