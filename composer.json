@@ -1,0 +1,35 @@
+{
+  "name": "co-stack/mysql-loader",
+  "description": "Handle MySQL LOAD DATA and SELECT INTO OUTFILE using doctrine/dbal",
+  "license": "BSD-3-Clause",
+  "type": "library",
+  "keywords": [
+    "mysql",
+    "dump",
+    "export",
+    "load",
+    "outfile",
+    "file import",
+    "sqldump"
+  ],
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "oliver.eglseder@co-stack.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "CoStack\\MysqlLoader\\": "src"
+    }
+  },
+  "bin": [
+    "bin/mysql-loader"
+  ],
+  "require": {
+    "ext-zip": "*",
+    "co-stack/lib": "^v3.5 || ^v4.6 || ^v5.1 || v6.0",
+    "doctrine/dbal": "^3.0",
+    "symfony/console": "^v5.4 || ^v6.4"
+  }
+}

@@ -1,0 +1,105 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use CoStack\MysqlLoader\DumpConfiguration;
+use CoStack\MysqlLoader\Dumper;
+use CoStack\MysqlLoader\ImportConfiguration;
+use CoStack\MysqlLoader\Importer;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+require '/app/vendor/autoload.php';
+
+$application = new Application();
+$application->add(
+    new class extends Command {
+        protected function configure(): void
+        {
+            $this->setName('dump')
+                 ->addOption('host', 'H', InputOption::VALUE_REQUIRED, 'MySQL host', 'localhost')
+                 ->addOption('port', 'P', InputOption::VALUE_REQUIRED, 'MySQL port', 3306)
+                 ->addOption('user', 'u', InputOption::VALUE_REQUIRED)
+                 ->addOption('password', 'p', InputOption::VALUE_REQUIRED)
+                 ->addOption('dbname', 'D', InputOption::VALUE_REQUIRED)
+                 ->addOption('folder', 'f', InputOption::VALUE_REQUIRED)
+                 ->addOption(
+                     'exclude',
+                     'x',
+                     InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                 )
+                 ->addOption('recreate-tables', 'r', InputOption::VALUE_NONE);
+        }
+
+        protected function execute(InputInterface $input, OutputInterface $output): int
+        {
+            $host = $input->getOption('host');
+            $port = $input->getOption('port');
+            $user = $input->getOption('user');
+            $password = $input->getOption('password');
+            $dbname = $input->getOption('dbname');
+            $folder = $input->getOption('folder');
+            $excludedTablesPatterns = $input->getOption('exclude');
+            $recreateTables = $input->getOption('recreate-tables');
+
+            $dumpConfiguration = new DumpConfiguration(
+                $host,
+                $port,
+                $user,
+                $password,
+                $dbname,
+                $folder,
+                $excludedTablesPatterns,
+                $recreateTables,
+            );
+
+            $dumper = new Dumper();
+            $dumper->dump($dumpConfiguration);
+
+            return self::SUCCESS;
+        }
+    },
+);
+$application->add(
+    new class extends Command {
+        protected function configure(): void
+        {
+            $this->setName('import')
+                 ->addOption('host', 'H', InputOption::VALUE_REQUIRED, 'MySQL host', 'localhost')
+                 ->addOption('port', 'P', InputOption::VALUE_REQUIRED, 'MySQL port', 3306)
+                 ->addOption('user', 'u', InputOption::VALUE_REQUIRED)
+                 ->addOption('password', 'p', InputOption::VALUE_REQUIRED)
+                 ->addOption('dbname', 'D', InputOption::VALUE_REQUIRED)
+                 ->addOption('file', 'f', InputOption::VALUE_REQUIRED);
+        }
+
+        protected function execute(InputInterface $input, OutputInterface $output): int
+        {
+            $host = $input->getOption('host');
+            $port = $input->getOption('port');
+            $user = $input->getOption('user');
+            $password = $input->getOption('password');
+            $dbname = $input->getOption('dbname');
+            $file = $input->getOption('file');
+
+            $dumpConfiguration = new ImportConfiguration(
+                $host,
+                $port,
+                $user,
+                $password,
+                $dbname,
+                $file,
+            );
+
+            $dumper = new Importer();
+            $dumper->import($dumpConfiguration);
+
+            return self::SUCCESS;
+        }
+    },
+);
+$application->run();
