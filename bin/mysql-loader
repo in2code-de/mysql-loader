@@ -31,12 +31,11 @@ $application->add(
                  ->addOption('password', 'p', InputOption::VALUE_REQUIRED)
                  ->addOption('dbname', 'D', InputOption::VALUE_REQUIRED)
                  ->addOption('folder', 'f', InputOption::VALUE_REQUIRED)
-                 ->addOption(
-                     'exclude',
-                     'x',
-                     InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                 )
-                 ->addOption('recreate-tables', 'r', InputOption::VALUE_NONE);
+                 ->addOption('exclude', 'x', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED)
+                 ->addOption('recreate-tables', 'r', InputOption::VALUE_NONE)
+                 ->addOption('truncate-instead-of-recreate', 'R', InputOption::VALUE_NONE)
+                 ->addOption('truncate-ignored-tables', 't', InputOption::VALUE_NONE)
+                 ->addOption('zip', 'z', InputOption::VALUE_NONE);
         }
 
         protected function execute(InputInterface $input, OutputInterface $output): int
@@ -49,6 +48,9 @@ $application->add(
             $folder = $input->getOption('folder');
             $excludedTablesPatterns = $input->getOption('exclude');
             $recreateTables = $input->getOption('recreate-tables');
+            $truncateInsteadOfRecreate = $input->getOption('truncate-instead-of-recreate');
+            $truncateIgnoredTables = $input->getOption('truncate-ignored-tables');
+            $zip = $input->getOption('zip');
 
             $dumpConfiguration = new DumpConfiguration(
                 $host,
@@ -59,6 +61,9 @@ $application->add(
                 $folder,
                 $excludedTablesPatterns,
                 $recreateTables,
+                $truncateInsteadOfRecreate,
+                $truncateIgnoredTables,
+                $zip,
             );
 
             $dumper = new Dumper();

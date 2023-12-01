@@ -6,22 +6,29 @@ namespace CoStack\MysqlLoader;
 
 use SensitiveParameter;
 
+use function CoStack\Lib\mkdir_deep;
 use function preg_match;
 use function preg_quote;
+use function rtrim;
 
 class DumpConfiguration
 {
+    public readonly string $folder;
+
     public function __construct(
         #[SensitiveParameter] public readonly string $host,
         #[SensitiveParameter] public readonly int $port,
         #[SensitiveParameter] public readonly string $user,
         #[SensitiveParameter] public readonly string $password,
         #[SensitiveParameter] public readonly string $dbname,
-        public readonly string $folder,
+        string $folder,
         public array $excludedTablesPatterns = [],
         public bool $recreateTables = true,
-        public bool $zip = true,
+        public bool $truncateInsteadOfRecreate = false,
+        public bool $truncateIgnoredTables = true,
+        public bool $zip = false,
     ) {
+        $this->folder = $this->normalizeAndCreateFolder($folder);
     }
 
     public static function fromParams(
@@ -29,7 +36,9 @@ class DumpConfiguration
         string $folder,
         array $excludedTablesPatterns = [],
         bool $recreateTables = true,
-        bool $zip = true,
+        bool $truncateInsteadOfRecreate = false,
+        bool $truncateIgnoredTables = true,
+        bool $zip = false,
     ): DumpConfiguration {
         return new DumpConfiguration(
             $params['host'] ?? 'localhost',
@@ -40,8 +49,17 @@ class DumpConfiguration
             $folder,
             $excludedTablesPatterns,
             $recreateTables,
+            $truncateInsteadOfRecreate,
+            $truncateIgnoredTables,
             $zip,
         );
+    }
+
+    protected function normalizeAndCreateFolder(string $folder): string
+    {
+        $folder = rtrim($folder, '/') . '/';
+        mkdir_deep($folder);
+        return $folder;
     }
 
     public function toParams(): array
@@ -58,7 +76,9 @@ class DumpConfiguration
     public function isExcluded(string $table): bool
     {
         foreach ($this->excludedTablesPatterns as $pattern) {
-            if (1 === preg_match('/' . preg_quote($pattern, '/') . '/', $table)) {
+            $quotedPattern = preg_quote($pattern, '/');
+            $finalPatter = '/' . $quotedPattern . '/';
+            if (1 === preg_match($finalPatter, $table)) {
                 return true;
             }
         }

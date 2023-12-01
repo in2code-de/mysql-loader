@@ -12,13 +12,13 @@ class ImportConfiguration
         #[SensitiveParameter] public readonly string $user,
         #[SensitiveParameter] public readonly string $password,
         #[SensitiveParameter] public readonly string $dbname,
-        public readonly string $file,
+        public readonly string $fileOrFolder,
     ) {
     }
 
     public static function fromParams(
         #[SensitiveParameter] array $params,
-        string $file,
+        string $fileOrFolder,
     ): DumpConfiguration {
         return new DumpConfiguration(
             $params['host'] ?? 'localhost',
@@ -26,7 +26,7 @@ class ImportConfiguration
             $params['user'],
             $params['password'],
             $params['dbname'],
-            $file,
+            $fileOrFolder,
         );
     }
 
