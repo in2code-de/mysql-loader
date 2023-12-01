@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CoStack\MysqlLoader;
+namespace CoStack\MysqlLoader\Service;
 
 use ArrayObject;
+use CoStack\MysqlLoader\DatabaseInfo;
+use CoStack\MysqlLoader\DatabaseManager;
+use CoStack\MysqlLoader\DumpConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use ZipArchive;
 
 use function basename;

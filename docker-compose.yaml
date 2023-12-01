@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: in2code/mysql:8.0
+    user: '1000'
+    command: --secure-file-priv=/opt/project
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    ports:
+      - 18995:3306
+    volumes:
+      - ./:/opt/project

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CoStack\MysqlLoader;
+namespace CoStack\MysqlLoader\Service;
 
+use CoStack\MysqlLoader\ImportConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use ZipArchive;

@@ -6,10 +6,13 @@ namespace CoStack\MysqlLoader;
 
 use SensitiveParameter;
 
+use function CoStack\Lib\concat_paths;
 use function CoStack\Lib\mkdir_deep;
+use function getcwd;
 use function preg_match;
 use function preg_quote;
 use function rtrim;
+use function str_starts_with;
 
 class DumpConfiguration
 {
@@ -60,6 +63,9 @@ class DumpConfiguration
 
     protected function normalizeAndCreateFolder(string $folder): string
     {
+        if (!str_starts_with($folder, '/')) {
+            $folder = concat_paths(getcwd(), $folder);
+        }
         $folder = rtrim($folder, '/') . '/';
         mkdir_deep($folder);
         return $folder;

@@ -1,0 +1,32 @@
+target: build/transient/export-test
+
+connection:
+  host: mysql
+  port: 3306
+  user: app
+  password: app
+  dbname: app
+  driver: pdo_mysql
+  charset: utf8
+  serverVersion: 8.0
+
+options:
+  # FALSE (default) or "<filename>.zip"
+  zip: FALSE
+  schema:
+    # recreate (default), truncate, none
+    method: recreate
+    skipEmptyTables: TRUE
+    skipIgnoredTables: TRUE
+  data:
+    skipEmptyTables: TRUE
+    skipIgnoredTables: TRUE
+
+tables:
+  exclude:
+    - 'my_secret_values'
+    - '/^cache_/'
+    - '/_secret$/'
+    - '/^.*?[^\d]{2,}$/'
+  filter:
+    '/_large_?/': 'entry_key != "external" AND ignore_export=0'
