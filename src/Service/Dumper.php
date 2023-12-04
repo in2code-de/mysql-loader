@@ -21,6 +21,7 @@ use function hash_file;
 use function implode;
 use function rename;
 use function sprintf;
+use function str_replace;
 use function str_starts_with;
 use function strlen;
 use function substr;
@@ -79,7 +80,9 @@ class Dumper
                 if ($dumpConfiguration->truncateInsteadOfRecreate) {
                     $truncates[] = $connection->getDatabasePlatform()->getTruncateTableSQL($tableName);
                 } else {
-                    $drops[] = $connection->getSchemaManager()->getDatabasePlatform()->getDropTableSQL($table);
+                    $dropTableSQL = $connection->getSchemaManager()->getDatabasePlatform()->getDropTableSQL($table);
+                    $dropTableSQL = str_replace('TABLE ', 'TABLE IF EXISTS ', $dropTableSQL);
+                    $drops[] = $dropTableSQL;
                     $statements = $connection->getSchemaManager()->getDatabasePlatform()->getCreateTableSQL($table);
                     foreach ($statements as $statement) {
                         $creates[] = $statement;
