@@ -4,10 +4,7 @@
 declare(strict_types=1);
 
 use CoStack\MysqlLoader\Application\ConsoleApplication;
-use CoStack\MysqlLoader\Command\DumpCommand;
-use CoStack\MysqlLoader\Command\ImportCommand;
 use CoStack\MysqlLoader\Generated\DI;
-use Symfony\Component\Console\Application;
 
 if (isset($GLOBALS['_composer_autoload_path'])) {
     require $GLOBALS['_composer_autoload_path'];
@@ -16,10 +13,6 @@ if (isset($GLOBALS['_composer_autoload_path'])) {
 } else {
     require __DIR__ . '/../../../autoload.php';
 }
-
-$f = new \CoStack\MysqlLoader\ConfigurationProcessor();
-$f->loadFile(__DIR__ . '/../.mysql-loader.yaml');
-
 $di = new DI();
 $application = $di->get(ConsoleApplication::class);
 $application->run();

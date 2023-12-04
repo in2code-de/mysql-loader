@@ -27,7 +27,6 @@ class DumpCommand extends Command
     protected function configure(): void
     {
         $this->setName('dump')
-             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file', '.mysql-loader.yaml')
              ->addOption('host', 'H', InputOption::VALUE_REQUIRED, 'MySQL host', 'localhost')
              ->addOption('port', 'P', InputOption::VALUE_REQUIRED, 'MySQL port', 3306)
              ->addOption('user', 'u', InputOption::VALUE_REQUIRED)
@@ -44,7 +43,6 @@ class DumpCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = $input->getOption('config');
         $host = $input->getOption('host');
         $port = $input->getOption('port');
         $user = $input->getOption('user');
