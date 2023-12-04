@@ -18,6 +18,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class DumpCommand extends Command
 {
     protected readonly Dumper $dumper;
+
     #[Required]
     public function injectDumper(#[Autowire(lazy: true)] Dumper $dumper): void
     {

@@ -6,10 +6,8 @@ namespace CoStack\MysqlLoader;
 
 use CoStack\MysqlLoader\Configration\Definition\ConfigurationDefinition;
 use CoStack\MysqlLoader\Configration\Loader\YamlLoader;
-use Symfony\Component\Config\Builder\ConfigBuilderGenerator;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Config\ConfigConfig;
 
 class ConfigurationProcessor
