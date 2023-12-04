@@ -7,6 +7,7 @@ namespace CoStack\MysqlLoader\Service;
 use CoStack\MysqlLoader\ImportConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use ZipArchive;
 
 use function dirname;
@@ -63,7 +64,15 @@ class Importer
         foreach ($tables as $table) {
             $inFile = $folder . $table . '.csv';
             if (file_exists($inFile)) {
-                $connection->executeStatement(sprintf('LOAD DATA INFILE \'%s\' INTO TABLE %s', $inFile, $table));
+                try {
+                    $connection->executeStatement(sprintf('LOAD DATA INFILE \'%s\' INTO TABLE %s', $inFile, $table));
+                } catch (Exception $e) {
+                    throw new \Exception(
+                        'Error while importing data from ' . $table . ': ' . $e->getMessage(),
+                        1701699938,
+                        $e,
+                    );
+                }
             }
         }
     }

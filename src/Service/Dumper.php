@@ -141,12 +141,13 @@ class Dumper
                 $connection->executeStatement(sprintf('SELECT * INTO OUTFILE \'%s\' FROM %s', $fileName, $tableName));
             }
             $files[] = $fileName;
-            if (
-                file_exists($fileName . '.bak')
-                && hash_file('sha1', $fileName) === hash_file('sha1', $fileName . '.bak')
-            ) {
-                unlink($fileName);
-                rename($fileName . '.bak', $fileName);
+            if (file_exists($fileName . '.bak')) {
+                if (hash_file('sha1', $fileName) === hash_file('sha1', $fileName . '.bak')) {
+                    unlink($fileName);
+                    rename($fileName . '.bak', $fileName);
+                } else {
+                    unlink($fileName . '.bak');
+                }
             }
         }
     }
