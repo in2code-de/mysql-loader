@@ -33,12 +33,20 @@
     "doctrine/dbal": "^3.0",
     "symfony/console": "^v5.4 || ^v6.4",
     "symfony/dependency-injection": "^5.4 || ^6.4",
-    "symfony/config": "^5.4 || ^6.4"
+    "symfony/config": "^5.4 || ^6.4",
+    "co-stack/build-essentials": "@dev"
   },
   "require-dev": {
     "symfony/yaml": "^5.4 || ^6.4"
   },
-  "scripts": {
-    "build": "php build/scripts/build-container.php"
+  "config": {
+    "allow-plugins": {
+      "co-stack/build-essentials": true
+    }
+  },
+  "extra": {
+    "co-stack/build-essentials": {
+      "resource": "build/services.yaml"
+    }
   }
 }

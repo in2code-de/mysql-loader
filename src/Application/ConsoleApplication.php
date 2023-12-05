@@ -12,8 +12,6 @@ use Symfony\Contracts\Service\Attribute\Required;
 #[Autoconfigure(public: true)]
 class ConsoleApplication extends Application
 {
-    protected readonly iterable $commands;
-
     #[Required]
     public function injectCommands(#[TaggedIterator('app.command')] iterable $commands): void
     {
