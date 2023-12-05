@@ -31,9 +31,9 @@
     "ext-zip": "*",
     "co-stack/lib": "^v5.1 || v6.0",
     "doctrine/dbal": "^3.0",
-    "symfony/console": "^v5.4 || ^v6.4",
-    "symfony/dependency-injection": "^5.4 || ^6.4",
-    "symfony/config": "^5.4 || ^6.4",
+    "symfony/console": "^v5.4 || ^v6.3",
+    "symfony/dependency-injection": "^5.4 || ^6.3",
+    "symfony/config": "^5.4 || ^6.3",
     "co-stack/build-essentials": "@dev"
   },
   "require-dev": {
