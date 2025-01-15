@@ -46,7 +46,7 @@
   },
   "extra": {
     "co-stack/build-essentials": {
-      "resource": "build/services.yaml"
+      "resource": "config/services.yaml"
     }
   }
 }
