@@ -29,15 +29,15 @@
   "require": {
     "php": "^8.1",
     "ext-zip": "*",
-    "co-stack/lib": "^v5.1 || v6.0",
+    "co-stack/lib": "^v5.1 || ^v6.0 || ^v7.0 || ^v8.0",
     "doctrine/dbal": "^3.0",
-    "symfony/console": "^v5.4 || ^v6.3",
-    "symfony/dependency-injection": "^5.4 || ^6.3",
-    "symfony/config": "^5.4 || ^6.3",
+    "symfony/console": "^v5.4 || ^v6.3 || ^v7.2",
+    "symfony/dependency-injection": "^v5.4 || ^v6.3 || ^v7.2",
+    "symfony/config": "^v5.4 || ^v6.3 || ^v7.2",
     "co-stack/build-essentials": "@dev"
   },
   "require-dev": {
-    "symfony/yaml": "^5.4 || ^6.4"
+    "symfony/yaml": "^v5.4 || ^v6.4 || ^v7.2"
   },
   "config": {
     "allow-plugins": {
