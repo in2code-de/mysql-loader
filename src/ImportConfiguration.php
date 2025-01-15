@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CoStack\MysqlLoader;
 
+use SensitiveParameter;
+
 class ImportConfiguration
 {
     public function __construct(
