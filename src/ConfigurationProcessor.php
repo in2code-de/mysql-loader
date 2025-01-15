@@ -8,7 +8,6 @@ use CoStack\MysqlLoader\Configration\Definition\ConfigurationDefinition;
 use CoStack\MysqlLoader\Configration\Loader\YamlLoader;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Config\ConfigConfig;
 
 class ConfigurationProcessor
 {
