@@ -14,7 +14,7 @@ class DatabaseManager
     {
         if (is_callable([$connection, 'createSchemaManager'])) {
             // Doctrine 4.x
-            $tables = $connection->createSchemaManager()->listTableNames();
+            $tables = $connection->createSchemaManager()->listTables();
         } else {
             // Doctrine 3.x
             $tables = $connection->getSchemaManager()->listTableNames();
