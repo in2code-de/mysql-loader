@@ -14,6 +14,7 @@ use function dirname;
 use function exec;
 use function file_exists;
 use function file_get_contents;
+use function is_callable;
 use function is_dir;
 use function register_shutdown_function;
 use function sprintf;
@@ -59,7 +60,13 @@ class Importer
     {
         $connection->executeStatement(file_get_contents($folder . '_preamble.sql'));
 
-        $tables = $connection->getSchemaManager()->listTableNames();
+        if (is_callable([$connection, 'createSchemaManager'])) {
+            // Doctrine 4.x
+            $tables = $connection->createSchemaManager()->listTableNames();
+        } else {
+            // Doctrine 3.x
+            $tables = $connection->getSchemaManager()->listTableNames();
+        }
 
         foreach ($tables as $table) {
             $inFile = $folder . $table . '.csv';

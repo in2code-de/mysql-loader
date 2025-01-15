@@ -6,12 +6,19 @@ namespace CoStack\MysqlLoader;
 
 use Doctrine\DBAL\Connection;
 
+use function is_callable;
+
 class DatabaseManager
 {
     public function getDatabaseInformation(Connection $connection, DumpConfiguration $dumpConfiguration): DatabaseInfo
     {
-        $tables = $connection->getSchemaManager()->listTables();
-
+        if (is_callable([$connection, 'createSchemaManager'])) {
+            // Doctrine 4.x
+            $tables = $connection->createSchemaManager()->listTableNames();
+        } else {
+            // Doctrine 3.x
+            $tables = $connection->getSchemaManager()->listTableNames();
+        }
         $namedTables = $tableNames = $emptyTables = $excludedTables = [];
 
         foreach ($tables as $table) {
