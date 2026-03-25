@@ -19,6 +19,7 @@ use function is_dir;
 use function register_shutdown_function;
 use function sprintf;
 use function str_ends_with;
+use function trim;
 use function uniqid;
 
 class Importer
@@ -58,7 +59,10 @@ class Importer
 
     protected function importFromFolder(string $folder, Connection $connection): void
     {
-        $connection->executeStatement(file_get_contents($folder . '_preamble.sql'));
+        $preamble = trim((string)file_get_contents($folder . '_preamble.sql'));
+        if ($preamble !== '') {
+            $connection->executeStatement($preamble);
+        }
 
         if (is_callable([$connection, 'createSchemaManager'])) {
             // Doctrine 4.x
