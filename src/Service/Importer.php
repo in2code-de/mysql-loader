@@ -76,6 +76,9 @@ class Importer
             $inFile = $folder . $table . '.csv';
             if (file_exists($inFile)) {
                 try {
+                    $connection->executeStatement(
+                        $connection->getDatabasePlatform()->getTruncateTableSQL($table),
+                    );
                     $connection->executeStatement(sprintf('LOAD DATA INFILE \'%s\' INTO TABLE %s', $inFile, $table));
                 } catch (Exception $e) {
                     throw new \Exception(
