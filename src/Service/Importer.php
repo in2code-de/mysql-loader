@@ -61,7 +61,13 @@ class Importer
     {
         $preamble = trim((string)file_get_contents($folder . '_preamble.sql'));
         if ($preamble !== '') {
-            $connection->executeStatement($preamble);
+            $statements = array_filter(
+                array_map('trim', explode(';', $preamble)),
+                static fn(string $s): bool => $s !== '',
+            );
+            foreach ($statements as $statement) {
+                $connection->executeStatement($statement);
+            }
         }
 
         if (is_callable([$connection, 'createSchemaManager'])) {
