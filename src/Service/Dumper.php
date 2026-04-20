@@ -80,27 +80,9 @@ class Dumper
                 if ($dumpConfiguration->truncateInsteadOfRecreate) {
                     $truncates[] = $connection->getDatabasePlatform()->getTruncateTableSQL($tableName);
                 } else {
-                    if (is_callable([$connection, 'createSchemaManager'])) {
-                        // Doctrine 4 version
-                        $schemaManager = $connection->createSchemaManager();
-                        $table = $schemaManager->introspectTable($tableName);
-                        $platform = $connection->getDatabasePlatform();
-
-                        $dropTableSQL = $platform->getDropTableSQL($tableName);
-                        $dropTableSQL = str_replace('TABLE ', 'TABLE IF EXISTS ', $dropTableSQL);
-                        $drops[] = $dropTableSQL;
-                        $statements = $platform->getCreateTableSQL($table);
-                    } else {
-                        // Doctrine 3 version
-                        $dropTableSQL = $connection->getSchemaManager()->getDatabasePlatform()->getDropTableSQL($table);
-                        $dropTableSQL = str_replace('TABLE ', 'TABLE IF EXISTS ', $dropTableSQL);
-                        $drops[] = $dropTableSQL;
-                        $statements = $connection->getSchemaManager()->getDatabasePlatform()->getCreateTableSQL($table);
-                    }
-
-                    foreach ($statements as $statement) {
-                        $creates[] = $statement;
-                    }
+                    $drops[] = 'DROP TABLE IF EXISTS `' . $tableName . '`';
+                    $row = $connection->executeQuery('SHOW CREATE TABLE `' . $tableName . '`')->fetchAssociative();
+                    $creates[] = $row['Create Table'];
                 }
             }
         } elseif ($dumpConfiguration->truncateIgnoredTables) {
