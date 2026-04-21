@@ -28,7 +28,7 @@ class DatabaseManager
             $query = $connection->createQueryBuilder();
             $query->select('count(*) AS CNT')->from($tableName);
             $count = $query->executeQuery()->fetchOne();
-            if ($count === 0) {
+            if ((int)$count === 0) {
                 $emptyTables[] = $tableName;
             }
             if ($dumpConfiguration->isExcluded($tableName)) {

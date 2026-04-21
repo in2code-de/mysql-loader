@@ -20,8 +20,8 @@ use function fwrite;
 use function hash_file;
 use function implode;
 use function rename;
+use function preg_replace;
 use function sprintf;
-use function str_replace;
 use function str_starts_with;
 use function strlen;
 use function substr;
@@ -82,7 +82,7 @@ class Dumper
                 } else {
                     $drops[] = 'DROP TABLE IF EXISTS `' . $tableName . '`';
                     $row = $connection->executeQuery('SHOW CREATE TABLE `' . $tableName . '`')->fetchAssociative();
-                    $creates[] = $row['Create Table'];
+                    $creates[] = preg_replace('/ AUTO_INCREMENT=\d+/', '', $row['Create Table']);
                 }
             }
         } elseif ($dumpConfiguration->truncateIgnoredTables) {
