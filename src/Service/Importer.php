@@ -59,8 +59,8 @@ class Importer
 
     protected function importFromFolder(string $folder, Connection $connection): void
     {
-        $preamble = trim((string)file_get_contents($folder . '_preamble.sql'));
-        if ($preamble !== '') {
+        if (file_exists($folder . '_preamble.sql')) {
+            $preamble = trim((string)file_get_contents($folder . '_preamble.sql'));
             $statements = array_filter(
                 array_map('trim', explode(';', $preamble)),
                 static fn(string $s): bool => $s !== '',
