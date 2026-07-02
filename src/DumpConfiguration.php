@@ -31,6 +31,7 @@ class DumpConfiguration
         public bool $truncateIgnoredTables = true,
         public bool $zip = false,
         public array $filterQuery = [],
+        public array $onlyTablesPatterns = [],
     ) {
         $this->folder = $this->normalizeAndCreateFolder($folder);
     }
@@ -44,6 +45,7 @@ class DumpConfiguration
         bool $truncateIgnoredTables = true,
         bool $zip = false,
         array $filterQuery = [],
+        array $onlyTablesPatterns = [],
     ): DumpConfiguration {
         return new DumpConfiguration(
             $params['host'] ?? 'localhost',
@@ -58,6 +60,7 @@ class DumpConfiguration
             $truncateIgnoredTables,
             $zip,
             $filterQuery,
+            $onlyTablesPatterns,
         );
     }
 
@@ -85,6 +88,25 @@ class DumpConfiguration
     public function isExcluded(string $table): bool
     {
         foreach ($this->excludedTablesPatterns as $pattern) {
+            $quotedPattern = preg_quote($pattern, '/');
+            $finalPatter = '/' . $quotedPattern . '/';
+            if (1 === preg_match($finalPatter, $table)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * When no "only" patterns are given every table is included. Otherwise a table is only included
+     * if its name matches at least one of the patterns (substring match, like the exclude patterns).
+     */
+    public function isIncluded(string $table): bool
+    {
+        if ($this->onlyTablesPatterns === []) {
+            return true;
+        }
+        foreach ($this->onlyTablesPatterns as $pattern) {
             $quotedPattern = preg_quote($pattern, '/');
             $finalPatter = '/' . $quotedPattern . '/';
             if (1 === preg_match($finalPatter, $table)) {

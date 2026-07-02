@@ -22,7 +22,11 @@ class DatabaseManager
         $namedTables = $tableNames = $emptyTables = $excludedTables = [];
 
         foreach ($tables as $table) {
-            $tableNames[] = $tableName = $table->getName();
+            $tableName = $table->getName();
+            if (!$dumpConfiguration->isIncluded($tableName)) {
+                continue;
+            }
+            $tableNames[] = $tableName;
             $namedTables[$tableName] = Table::fromTable($table);
 
             $query = $connection->createQueryBuilder();

@@ -39,7 +39,8 @@ class DumpCommand extends Command
              ->addOption('truncate-instead-of-recreate', 'R', InputOption::VALUE_NONE)
              ->addOption('truncate-ignored-tables', 't', InputOption::VALUE_NONE)
              ->addOption('zip', 'z', InputOption::VALUE_NONE)
-             ->addOption('filter-query', 'Q', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED);
+             ->addOption('filter-query', 'Q', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED)
+             ->addOption('only', 'o', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Only dump tables whose name matches one of these patterns (substring)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -56,6 +57,7 @@ class DumpCommand extends Command
         $truncateIgnoredTables = $input->getOption('truncate-ignored-tables');
         $zip = $input->getOption('zip');
         $filterQuery = $input->getOption('filter-query');
+        $onlyTablesPatterns = $input->getOption('only');
 
         $dumpConfiguration = new DumpConfiguration(
             $host,
@@ -70,6 +72,7 @@ class DumpCommand extends Command
             $truncateIgnoredTables,
             $zip,
             $filterQuery,
+            $onlyTablesPatterns,
         );
 
         $this->dumper->dump($dumpConfiguration);
